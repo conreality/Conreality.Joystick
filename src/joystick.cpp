@@ -40,16 +40,22 @@ bool Joystick::init(byte xAxis, byte yAxis, byte *buttonsArray, int buttonsLen,b
 
 void Joystick::send()
 {
-    byte joystick[2 + 1 + _btnLen];
+    byte joystick[1 + 2 + 1 + _btnLen];
 
-    joystick[0] = map(analogRead(_x), 0, 1023, 0, 255);
-    joystick[1] = map(analogRead(_y), 0, 1023, 0, 255);
+    joystick[0]=RECEIVER_ADDRESS;
 
-    joystick[2] = _btnLen;
+    joystick[1] = map(analogRead(_x), 0, 1023, 0, 255);
+    joystick[2] = map(analogRead(_y), 0, 1023, 0, 255);
+
+    joystick[3] = _btnLen;
     for (int i = 0; i < _btnLen; i++)
     {
-        joystick[i + 2 + 1] = digitalRead(_buttons[i]);
+        joystick[i+ 1 + 2 + 1] = digitalRead(_buttons[i]);
     }
 
-    _manager->sendtoWait(joystick, sizeof(joystick), 255);
+    for (int i = 0; i < 3; i++)
+    {
+        _manager->sendtoWait(joystick, sizeof(joystick), 255);    
+    }
+    delay(50);
 }

@@ -12,6 +12,10 @@
 #define JOYSTICK_ADDRESS 1
 #endif
 
+#ifndef RECEIVER_ADDRESS
+#define RECEIVER_ADDRESS 2
+#endif
+
 class Joystick
 {
 private:
